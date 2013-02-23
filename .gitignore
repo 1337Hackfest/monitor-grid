@@ -20,3 +20,6 @@
 # NetBeans #
 nb-configuration.xml
 
+/code/monitor-grid-domain/target/
+/code/monitor-grid-server/target/
+/code/monitor-grid-client/target/
