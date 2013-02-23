@@ -1,0 +1,22 @@
+# Directories #
+*/target/**
+
+# Classes #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse #
+.project
+.settings
+.classpath
+
+# IntelliJ #
+.iml
+
+# NetBeans #
+nb-configuration.xml
+
