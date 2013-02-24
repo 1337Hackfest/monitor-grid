@@ -1,35 +1,36 @@
 package org.hackfest.monitor.domain;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Resource implements Serializable{
     
-    private String name;
-    private Object value;
+    private String localAddress;
+    private int port;
 
-    public String getName() {
-        return name;
+    public String getLocalAddress() {
+        return localAddress;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLocalAddress(String localAddress) {
+        this.localAddress = localAddress;
     }
 
-    public Object getValue() {
-        return value;
+    public int getPort() {
+        return port;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + (this.name != null ? this.name.hashCode() : 0);
-        hash = 23 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash = 13 * hash + (this.localAddress != null ? this.localAddress.hashCode() : 0);
+        hash = 13 * hash + this.port;
         return hash;
     }
 
@@ -42,10 +43,10 @@ public class Resource implements Serializable{
             return false;
         }
         final Resource other = (Resource) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+        if (this.localAddress != other.localAddress && (this.localAddress == null || !this.localAddress.equals(other.localAddress))) {
             return false;
         }
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+        if (this.port != other.port) {
             return false;
         }
         return true;
@@ -53,8 +54,8 @@ public class Resource implements Serializable{
 
     @Override
     public String toString() {
-        return "Resource{" + "name=" + name + ", value=" + value + '}';
+        return "Resource{" + "localAddress=" + localAddress + ", port=" + port + '}';
     }
-    
+
     
 }

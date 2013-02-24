@@ -3,32 +3,39 @@ package org.hackfest.monitor.server;
 import com.hazelcast.core.Hazelcast;
 import java.net.Socket;
 import java.util.Map;
-import org.hackfest.monitor.domain.Resource;
+import java.util.UUID;
+import org.hackfest.monitor.domain.GridMap;
+import org.hackfest.monitor.domain.griddata.UsedPort;
+import org.joda.time.DateTime;
 
 
 public class PortScanner {
 
     public void scan(int startPort, int endPort) {
         
-        Map<Long, Resource> mapResources = Hazelcast.getMap("resources");
+        Map<UUID, UsedPort> mapResources = Hazelcast.getMap(GridMap.USED_PORTS.name());
         System.out.println("Map Size:" + mapResources.size());
         
         int startPortRange = startPort;
         int stopPortRange = endPort;
+        UsedPort port;
 
         for (int i = startPortRange; i <= stopPortRange; i++) {
             try {
                 Socket serverSocket = new Socket("127.0.0.1", i);
-                System.out.println("Port in use: " + i);
+                port = new UsedPort();
+                port.setDiscoveredtime(DateTime.now());
+                port.setInetAddress(serverSocket.getInetAddress());
+                port.setLocalAddress(serverSocket.getLocalAddress());
+                port.setLocalPort(serverSocket.getLocalPort());
+                port.setPort(serverSocket.getPort());
+                port.setSocketAddress(serverSocket.getRemoteSocketAddress());
+                
                 serverSocket.close();
-                Resource res = new Resource();
-                res.setName("port");
-                res.setValue(i);
-
-                mapResources.put(System.currentTimeMillis(), res);
-                System.out.println("Map Size:" + mapResources.size());
+                mapResources.put(UUID.randomUUID(), port);
+                System.out.println("Added element to grid! Port: " + i);
             } catch (Exception e) {
-                // Could not open connection. Port not in use
+                System.out.println("Port not used: " + i);
             }
         }
     }
